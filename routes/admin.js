@@ -5,10 +5,11 @@ const productController = require("../controllers/product");
 
 const router = express.Router();
 
-// /admin/add-product => GET
+// /admin => GET
 router.get("/add-product", productController.getAddProduct);
+router.get("/products", productController.getAdminProducts);
 
-// /admin/add-product => POST
+// /admin => POST
 router.post("/add-product", productController.postAddProduct);
 
 module.exports = router;
