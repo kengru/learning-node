@@ -18,8 +18,11 @@ const getProductsFromFile = cb => {
 };
 
 module.exports = class Product {
-  constructor(title) {
+  constructor(title, imageUrl, desc, price) {
     this.title = title;
+    this.imageUrl = imageUrl;
+    this.description = desc;
+    this.price = price;
   }
 
   save() {
