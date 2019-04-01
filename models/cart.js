@@ -16,7 +16,9 @@ module.exports = class Cart {
         cart = JSON.parse(fileContent);
       }
       // analyze the cart
-      const existingProductIndex = cart.products.findIndex(prod => prod.id === id);
+      const existingProductIndex = cart.products.findIndex(
+        prod => prod.id === id
+      );
       const existingProduct = cart.products[existingProductIndex];
       let updatedProduct;
       if (existingProduct) {
@@ -26,12 +28,39 @@ module.exports = class Cart {
         cart.products[existingProductIndex] = updatedProduct;
       } else {
         updatedProduct = { id: id, qty: 1 };
-        cart.products = [ ...cart.products, updatedProduct ]
+        cart.products = [...cart.products, updatedProduct];
       }
       cart.totalPrice = cart.totalPrice + +productPrice;
       fs.writeFile(p, JSON.stringify(cart), error => {
         console.log(error);
-      })
+      });
+    });
+  }
+
+  static deleteProduct(id, productPrice) {
+    fs.readFile(p, (error, fileContent) => {
+      if (error) {
+        return;
+      }
+      const updatedCart = { ...JSON.parse(fileContent) };
+      const product = updatedCart.products.find(p => p.id === id);
+      updatedCart.products = updatedCart.products.filter(p => p.id !== id);
+      updatedCart.totalPrice =
+        updatedCart.totalPrice - productPrice * product.qty;
+      fs.writeFile(p, JSON.stringify(updatedCart), error => {
+        console.log(error);
+      });
+    });
+  }
+
+  static getProducts(cb) {
+    fs.readFile(p, (error, fileContent) => {
+      const cart = JSON.parse(fileContent);
+      if (error) {
+        cb(null);
+      } else {
+        cb(cart);
+      }
     });
   }
 };
