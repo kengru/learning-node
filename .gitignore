@@ -61,4 +61,4 @@ typings/
 .next
 
 # file product data
-data/
+data/*
