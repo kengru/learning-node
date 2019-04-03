@@ -21,16 +21,19 @@ module.exports = class Product {
   }
 
   save() {
-    
+    return db.execute(
+      `insert into products (title, price, description, imageUrl) values (?, ?, ?, ?)`,
+      [this.title, this.price, this.description, this.imageUrl]
+    );
   }
 
   static fetchAll() {
-    return db.execute("select * from products");
+    return db.execute(`select * from products`);
   }
 
   static findById(id) {
+    return db.execute(`select * from products where products.id = ?`, [id]);
   }
 
-  static deleteById(id) {
-  }
+  static deleteById(id) {}
 };
