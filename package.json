@@ -17,7 +17,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mysql2": "^1.6.5",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "sequelize": "^5.2.9"
   },
   "nodemonConfig": {
     "ignore": [
