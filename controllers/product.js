@@ -2,10 +2,10 @@ const Product = require("../models/product");
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then(product => {
       res.render("shop/product-detail", {
-        product: product[0],
+        product: product,
         pageTitle: product.title
       });
     })
@@ -13,10 +13,10 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fields]) => {
+  Product.findAll()
+    .then(products => {
       res.render("shop/product-list", {
-        prods: rows,
+        prods: products,
         pageTitle: "Products",
         path: "/products"
       });
