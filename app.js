@@ -8,6 +8,8 @@ const errorController = require("./controllers/error");
 const sequelize = require("./util/database");
 const ProductModel = require("./models/product");
 const UserModel = require("./models/user");
+const CartModel = require("./models/cart");
+const CartItemModel = require("./models/cart-item");
 
 const app = express();
 
@@ -36,6 +38,10 @@ app.use(errorController.get404);
 
 ProductModel.belongsTo(UserModel, { constraints: true, onDelete: "CASCADE" });
 UserModel.hasMany(ProductModel);
+UserModel.hasOne(CartModel);
+CartModel.belongsTo(UserModel);
+CartModel.belongsToMany(ProductModel, { through: CartItemModel });
+ProductModel.belongsToMany(CartModel, { through: CartItemModel });
 
 sequelize
   // .sync({force: true})
@@ -50,7 +56,10 @@ sequelize
     return Promise.resolve(user);
   })
   .then(user => {
-    console.log(user);
+    // console.log(user);
+    return user.createCart();
+  })
+  .then(cart => {
     console.log("Listening at port:", PORT);
     app.listen(PORT);
   })
