@@ -26,7 +26,6 @@ app.use(errorController.get404);
 sequelize
   .sync()
   .then(result => {
-    console.log(result);
     console.log("Listening at port:", PORT);
     app.listen(PORT);
   })
