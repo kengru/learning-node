@@ -1,8 +1,15 @@
-const Sequelize = require("sequelize");
+const mongodb = require("mongodb");
+const MongoClient = mongodb.MongoClient;
 
-const sequelize = new Sequelize("node-learn", "root", "reflejo99", {
-  dialect: "mysql",
-  host: "localhost"
-});
+const mongoConnect = callback => {
+  MongoClient.connect(
+    "mongodb+srv://shnode:reflexes@l-node-psbai.mongodb.net/test?retryWrites=true"
+  )
+    .then(client => {
+      console.log("Connected to Atlas.");
+      callback(client);
+    })
+    .catch(error => console.log(error));
+};
 
-module.exports = sequelize;
+module.exports = mongoConnect;
