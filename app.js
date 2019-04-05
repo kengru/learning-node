@@ -6,6 +6,7 @@ const PORT = 3000;
 
 const errorController = require("./controllers/error");
 const mongoConnect = require("./util/database").mongoConnect;
+const User = require("./models/user");
 
 const app = express();
 
@@ -19,12 +20,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
-  // UserModel.findByPk(1)
-  //   .then(user => {
-  //     req.user = user;
-  //     next();
-  //   })
-  //   .catch(error => console.log(error));
+  User.findById("5ca7672ecae63932b4d28e63")
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(error => console.log(error));
   next();
 });
 
