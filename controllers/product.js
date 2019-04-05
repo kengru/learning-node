@@ -2,7 +2,7 @@ const Product = require("../models/product");
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
+  Product.findById(prodId)
     .then(product => {
       res.render("shop/product-detail", {
         product: product,
@@ -13,7 +13,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll()
     .then(products => {
       res.render("shop/product-list", {
         prods: products,

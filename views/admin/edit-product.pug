@@ -20,6 +20,6 @@ block content
         label(for="desc") Description
         textarea(name="desc", rows="5")#desc #{editing ? product.description : null}
       if editing
-        input(type="hidden", name="productId", value=product.id)
+        input(type="hidden", name="productId", value=product._id)
       button.btn(type="submit") #{editing ? "Edit Product" : "Add Product"}
     
