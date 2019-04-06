@@ -1,5 +1,17 @@
 const Product = require("../models/product");
 
+exports.getAdminProducts = (req, res, next) => {
+  Product.find()
+    .then(products => {
+      res.render("admin/products", {
+        prods: products,
+        pageTitle: "Admin Products",
+        path: "/admin/products"
+      });
+    })
+    .catch(error => console.log(error));
+};
+
 exports.getAddProduct = (req, res) => {
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
@@ -8,14 +20,11 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.postAddProduct = (req, res) => {
-  const title = req.body.title;
-  const price = req.body.price;
-  const description = req.body.desc;
-  const imageUrl = req.body.imageUrl;
+  const { title, price, desc, imageUrl } = req.body;
   const product = new Product({
     title: title,
     price: price,
-    description: description,
+    description: desc,
     imageUrl: imageUrl
   });
   product
@@ -42,18 +51,14 @@ exports.getEditProduct = (req, res) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  const prodId = req.body.productId;
-  const upTitle = req.body.title;
-  const upPrice = req.body.price;
-  const upDesc = req.body.desc;
-  const upImageUrl = req.body.imageUrl;
-  const product = new Product(upTitle, upPrice, upDesc, upImageUrl, prodId);
-  product
-    .save()
-    .then(result => {
-      console.log("UPDATED PRODUCT");
-      res.redirect("/admin/products");
-    })
+  const { productId, title, price, desc, imageUrl } = req.body;
+  Product.findByIdAndUpdate(productId, {
+    title,
+    price,
+    desc,
+    imageUrl
+  })
+    .then(res.redirect("/admin/products"))
     .catch(error => console.log(error));
 };
 
@@ -62,18 +67,6 @@ exports.postDeleteProduct = (req, res, next) => {
   Product.deleteById(prodId)
     .then(() => {
       res.redirect("/admin/products");
-    })
-    .catch(error => console.log(error));
-};
-
-exports.getAdminProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(products => {
-      res.render("admin/products", {
-        prods: products,
-        pageTitle: "Admin Products",
-        path: "/admin/products"
-      });
     })
     .catch(error => console.log(error));
 };

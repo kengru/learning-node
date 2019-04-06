@@ -13,7 +13,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getAllProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render("shop/product-list", {
         prods: products,

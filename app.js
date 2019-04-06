@@ -33,10 +33,15 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+// Updating mongoose variables to remove uneventful warnings.
+mongoose.set("useNewUrlParser", true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
+// Connecting to the mongo database.
 mongoose
   .connect(
-    "mongodb+srv://shnode:reflexes@l-node-psbai.mongodb.net/shop?retryWrites=true",
-    { useNewUrlParser: true }
+    "mongodb+srv://shnode:reflexes@l-node-psbai.mongodb.net/shop?retryWrites=true"
   )
   .then(result => {
     console.log("Listening at port:", PORT);
