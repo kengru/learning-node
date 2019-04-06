@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 
 const Order = require("./order");
 
+//TODO: Add price to cart and then to orders.
+
 const userSch = new Schema({
   name: {
     type: String,
