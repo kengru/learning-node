@@ -1,11 +1,11 @@
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const PORT = 3000;
 
 const errorController = require("./controllers/error");
-const mongoConnect = require("./util/database").mongoConnect;
 const User = require("./models/user");
 
 const app = express();
@@ -33,7 +33,12 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
-  console.log("Listening at port:", PORT);
-  app.listen(PORT);
-});
+mongoose
+  .connect(
+    "mongodb+srv://shnode:reflexes@l-node-psbai.mongodb.net/test?retryWrites=true"
+  )
+  .then(result => {
+    console.log("Listening at port:", PORT);
+    app.listen(PORT);
+  })
+  .catch(error => console.log(error));
