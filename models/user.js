@@ -43,7 +43,15 @@ userSch.methods.addToCart = function(product) {
   const updatedCart = { items: updatedCartItems };
   this.cart = updatedCart;
   return this.save();
-}
+};
+
+userSch.methods.removeFromCart = function(id) {
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.productId._id.toString() !== id.toString();
+  });
+  this.cart.items = updatedCartItems;
+  return this.save();
+};
 
 module.exports = mongoose.model("User", userSch, "users");
 
@@ -64,19 +72,6 @@ module.exports = mongoose.model("User", userSch, "users");
 //       .collection("users")
 //       .insertOne(this)
 //       .catch(error => console.log(error));
-//   }
-
-//   deleteItemFromCart(id) {
-//     const db = getDb();
-//     const updatedCartItems = this.cart.items.filter(item => {
-//       return item.productId.toString() !== id.toString();
-//     });
-//     return db
-//       .collection("users")
-//       .updateOne(
-//         { _id: new mongodb.ObjectId(this._id) },
-//         { $set: { cart: { items: updatedCartItems } } }
-//       );
 //   }
 
 //   addOrder() {
