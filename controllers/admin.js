@@ -2,9 +2,8 @@ const Product = require("../models/product");
 
 exports.getAdminProducts = (req, res, next) => {
   Product.find()
-    .populate("userId", "-_id, name")
+    .populate("userId", "name")
     .then(products => {
-      console.log(products);
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin Products",
