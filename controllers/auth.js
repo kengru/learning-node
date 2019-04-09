@@ -1,5 +1,15 @@
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const sendGrid = require("nodemailer-sendgrid");
+
+const User = require("../models/user");
+
+const transporter = nodemailer.createTransport(
+  sendGrid({
+    apiKey:
+      "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"
+  })
+);
 
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
@@ -65,6 +75,12 @@ exports.postSignup = (req, res, next) => {
           return user.save();
         })
         .then(result => {
+          transporter.sendMail({
+            to: email,
+            from: "shop@lnode.com",
+            subject: "Signup succeeded!",
+            html: "<h1>You have signed in!</h1>"
+          });
           res.redirect("/login");
         });
     })

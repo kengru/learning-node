@@ -23,6 +23,8 @@
     "express-session": "^1.15.6",
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.22",
+    "nodemailer": "^6.1.0",
+    "nodemailer-sendgrid": "^1.0.3",
     "pug": "^2.0.3"
   },
   "nodemonConfig": {
