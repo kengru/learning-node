@@ -59,7 +59,7 @@ userSch.methods.removeFromCart = function(id) {
 userSch.methods.addOrder = function() {
   const order = new Order({
     user: {
-      name: this.name,
+      email: this.email,
       userId: this._id
     },
     items: this.cart.items
