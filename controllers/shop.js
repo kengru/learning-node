@@ -51,7 +51,6 @@ exports.getOrders = (req, res, next) => {
   Order.find({ "user.userId": req.user._id })
     .populate("items.product")
     .then(orders => {
-      console.log(orders[0].items);
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
@@ -59,7 +58,7 @@ exports.getOrders = (req, res, next) => {
         isAuthenticated: req.session.isLoggedIn
       });
     })
-    .catch(err => console.log(err));
+    .catch(error => console.log(error));
 };
 
 exports.postOrder = (req, res, next) => {
