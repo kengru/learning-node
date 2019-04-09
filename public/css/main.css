@@ -234,3 +234,9 @@ form {
     display: none;
   }
 }
+
+@media (max-width: 767px) {
+  .main-header__nav {
+    display: none;
+  }
+}
