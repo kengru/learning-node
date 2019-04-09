@@ -21,5 +21,6 @@ block content
         textarea(name="desc", rows="5")#desc #{editing ? product.description : null}
       if editing
         input(type="hidden", name="productId", value=product._id)
+      input(type="hidden", name="_csrf", value=csrfToken)
       button.btn(type="submit") #{editing ? "Edit Product" : "Add Product"}
     
