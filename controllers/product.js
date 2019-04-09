@@ -6,7 +6,8 @@ exports.getProduct = (req, res, next) => {
     .then(product => {
       res.render("shop/product-detail", {
         product: product,
-        pageTitle: product.title
+        pageTitle: product.title,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(error => console.log(error));
@@ -18,7 +19,8 @@ exports.getAllProducts = (req, res, next) => {
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "Products",
-        path: "/products"
+        path: "/products",
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(error => console.log(error));
