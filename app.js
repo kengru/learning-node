@@ -64,18 +64,6 @@ mongoose.set("useCreateIndex", true);
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          name: "Ken",
-          email: "ken@gru.com",
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
     console.log("Listening at port:", PORT);
     app.listen(PORT);
   })

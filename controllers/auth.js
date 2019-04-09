@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res, next) => {
   res.render("auth/login", {
@@ -9,9 +10,9 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
-  res.render('auth/signup', {
-    path: '/signup',
-    pageTitle: 'Signup',
+  res.render("auth/signup", {
+    path: "/signup",
+    pageTitle: "Signup",
     isAuthenticated: false
   });
 };
@@ -23,12 +24,34 @@ exports.postLogin = (req, res, next) => {
       req.session.user = user;
       req.session.save(error => {
         res.redirect("/");
-      })
+      });
     })
     .catch(error => console.log(error));
 };
 
-exports.postSignup = (req, res, next) => {};
+exports.postSignup = (req, res, next) => {
+  const { email, password, confirmPassword } = req.body;
+  User.findOne({ email: email })
+    .then(uExist => {
+      if (uExist) {
+        return res.redirect("/signup");
+      }
+      return bcrypt
+        .hash(password, 12)
+        .then(hashedPassword => {
+          const user = new User({
+            email: email,
+            password: hashedPassword,
+            cart: { items: [] }
+          });
+          return user.save();
+        })
+        .then(result => {
+          res.redirect("/login");
+        });
+    })
+    .catch(error => console.log(error));
+};
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(() => {

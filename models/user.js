@@ -6,11 +6,11 @@ const Order = require("./order");
 //TODO: Add price to cart and then to orders.
 
 const userSch = new Schema({
-  name: {
+  email: {
     type: String,
     required: true
   },
-  email: {
+  password: {
     type: String,
     required: true
   },
