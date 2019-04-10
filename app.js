@@ -6,18 +6,14 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const csrf = require("csurf");
-
-const PORT = 3000;
+require("dotenv").config();
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
 
-const MONGODB_URI =
-  "mongodb+srv://shnode:reflexes@l-node-psbai.mongodb.net/shop";
-
 const app = express();
 const store = new MongoDBStore({
-  uri: MONGODB_URI,
+  uri: process.env.MONGO_URI,
   collection: "sessions"
 });
 
@@ -75,9 +71,9 @@ mongoose.set("useCreateIndex", true);
 
 // Connecting to the mongo database.
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGO_URI)
   .then(result => {
-    console.log("Listening at port:", PORT);
-    app.listen(PORT);
+    console.log("Listening at port:", process.env.PORT);
+    app.listen(process.env.PORT);
   })
   .catch(error => console.log(error));
