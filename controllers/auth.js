@@ -87,6 +87,7 @@ exports.postSignup = (req, res, next) => {
     })
     .catch(error => console.log(error));
 };
+
 exports.getReset = (req, res, next) => {
   res.render("auth/reset", {
     path: "/reset",
@@ -118,9 +119,8 @@ exports.postReset = (req, res, next) => {
           from: "shop@lnode.com",
           subject: "Password Reset",
           html: `<p>You requested a password reset</p>
-                <p>Click this <a href="https://localhost:3000/reset/${token}>link</a> to set a new password.`
+                <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.`
         });
-        res.redirect("/login");
       })
       .catch(error => {
         console.log(error);
