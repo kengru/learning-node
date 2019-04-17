@@ -1,8 +1,8 @@
 const Product = require("../models/product");
 
 exports.getAdminProducts = (req, res, next) => {
-  Product.find()
-    .populate("userId", "name")
+  Product.find({ userId: req.user._id })
+    //.populate("userId", "name")
     .then(products => {
       res.render("admin/products", {
         prods: products,
@@ -66,7 +66,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findByIdAndDelete(prodId)
+  Product.deleteOne({ _id: prodId, userId: req.user._id })
     .then(() => {
       res.redirect("/admin/products");
     })
