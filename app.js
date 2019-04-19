@@ -73,7 +73,7 @@ mongoose.set("useCreateIndex", true);
 mongoose
   .connect(process.env.MONGO_URI)
   .then(result => {
-    console.log("Listening at port:", process.env.PORT);
+    console.log(`Listening at port: ${process.env.PORT}`);
     app.listen(process.env.PORT);
   })
   .catch(error => console.log(error));
