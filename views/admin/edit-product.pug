@@ -6,19 +6,32 @@ block styles
 
 block content
   main
+    if errorMessage.length
+      div.user-message.user-message--error #{errorMessage}
     form.product-form(action=editing ? "/admin/edit-product" : "/admin/add-product", method="POST")
       .form-control
         label(for="title") Title
-        input(type="text", name="title", value=editing ? product.title : null)#title
+        input(type="text", 
+        name="title", 
+        value=editing || hasError ? product.title : null,
+        class=validationErrors.find(e => e.param === "title") ? "invalid" : "")#title
       .form-control
         label(for="imageUrl") Image URL
-        input(type="text", name="imageUrl", value=editing ? product.imageUrl : null)#imageUrl
+        input(type="text", 
+        name="imageUrl", 
+        value=editing || hasError ? product.imageUrl : null,
+        class=validationErrors.find(e => e.param === "imageUrl") ? "invalid" : "")#imageUrl
       .form-control
         label(for="price") Price
-        input(type="number", name="price" step="0.1", value=editing ? product.price : null)#price
+        input(type="number", 
+        name="price" step="0.1", 
+        value=editing || hasError ? product.price : null,
+        class=validationErrors.find(e => e.param === "price") ? "invalid" : "")#price
       .form-control
-        label(for="desc") Description
-        textarea(name="desc", rows="5")#desc #{editing ? product.description : null}
+        label(for="description") Description
+        textarea(name="description", 
+        rows="5",
+        class=validationErrors.find(e => e.param === "description") ? "invalid" : "")#desc #{editing || hasError ? product.description : null}
       if editing
         input(type="hidden", name="productId", value=product._id)
       input(type="hidden", name="_csrf", value=csrfToken)
