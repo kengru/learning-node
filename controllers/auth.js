@@ -25,12 +25,25 @@ exports.getSignup = (req, res, next) => {
   res.render("auth/signup", {
     path: "/signup",
     pageTitle: "Signup",
-    errorMessage: req.flash("error")
+    errorMessage: req.flash("error"),
+    oldInput: {
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
   });
 };
 
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/login", {
+      path: "/login",
+      pageTitle: "Login",
+      errorMessage: errors.array()[0].msg
+    });
+  }
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
@@ -59,41 +72,39 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-  const { email, password, confirmPassword } = req.body;
+  const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.array());
     return res.status(422).render("auth/signup", {
       path: "/signup",
       pageTitle: "Signup",
-      errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password,
+        confirmPassword: req.body.confirmPassword
+      }
     });
   }
-  User.findOne({ email: email })
-    .then(uExist => {
-      if (uExist) {
-        req.flash("error", "Email already exists.");
-        return res.redirect("/signup");
-      }
-      return bcrypt
-        .hash(password, 12)
-        .then(hashedPassword => {
-          const user = new User({
-            email: email,
-            password: hashedPassword,
-            cart: { items: [] }
-          });
-          return user.save();
-        })
-        .then(result => {
-          transporter.sendMail({
-            to: email,
-            from: "shop@lnode.com",
-            subject: "Signup succeeded!",
-            html: "<h1>You have signed in!</h1>"
-          });
-          res.redirect("/login");
-        });
+  bcrypt
+    .hash(password, 12)
+    .then(hashedPassword => {
+      const user = new User({
+        email: email,
+        password: hashedPassword,
+        cart: { items: [] }
+      });
+      return user.save();
+    })
+    .then(result => {
+      transporter.sendMail({
+        to: email,
+        from: "shop@lnode.com",
+        subject: "Signup succeeded!",
+        html: "<h1>You have signed in!</h1>"
+      });
+      res.redirect("/login");
     })
     .catch(error => console.log(error));
 };
