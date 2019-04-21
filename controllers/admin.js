@@ -11,7 +11,7 @@ exports.getAdminProducts = (req, res, next) => {
         path: "/admin/products"
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -84,10 +84,10 @@ exports.getEditProduct = (req, res) => {
         validationErrors: []
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
-      return next(error); 
+      return next(error);
     });
 };
 
@@ -119,7 +119,7 @@ exports.postEditProduct = (req, res, next) => {
     imageUrl: imageUrl
   })
     .then(res.redirect("/admin/products"))
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -132,7 +132,7 @@ exports.postDeleteProduct = (req, res, next) => {
     .then(() => {
       res.redirect("/admin/products");
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

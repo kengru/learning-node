@@ -9,7 +9,7 @@ exports.getProduct = (req, res, next) => {
         pageTitle: product.title
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -25,7 +25,7 @@ exports.getAllProducts = (req, res, next) => {
         path: "/products"
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);

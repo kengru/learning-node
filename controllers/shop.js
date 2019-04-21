@@ -10,7 +10,7 @@ exports.getIndex = (req, res, next) => {
         path: "/"
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -28,7 +28,7 @@ exports.getCart = (req, res, next) => {
         cart: user.cart.items
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -42,7 +42,11 @@ exports.postCart = (req, res, next) => {
       return req.user.addToCart(product);
     })
     .then(res.redirect("/cart"))
-    .catch(error => console.log(error));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postCartDelete = (req, res, next) => {
@@ -50,11 +54,11 @@ exports.postCartDelete = (req, res, next) => {
   req.user
     .removeFromCart(productId)
     .then(res.redirect("/cart"))
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
-    };
+    });
 };
 
 exports.getOrders = (req, res, next) => {
@@ -67,7 +71,7 @@ exports.getOrders = (req, res, next) => {
         orders: orders
       });
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -80,7 +84,7 @@ exports.postOrder = (req, res, next) => {
     .then(result => {
       res.redirect("/orders");
     })
-    .catch(error => {
+    .catch(err => {
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
