@@ -9,7 +9,11 @@ exports.getProduct = (req, res, next) => {
         pageTitle: product.title
       });
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getAllProducts = (req, res, next) => {
@@ -21,5 +25,9 @@ exports.getAllProducts = (req, res, next) => {
         path: "/products"
       });
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
