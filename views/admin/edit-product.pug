@@ -8,7 +8,9 @@ block content
   main
     if errorMessage.length
       div.user-message.user-message--error #{errorMessage}
-    form.product-form(action=editing ? "/admin/edit-product" : "/admin/add-product", method="POST")
+    form.product-form(action=editing ? "/admin/edit-product" : "/admin/add-product", 
+    method="POST", 
+    enctype="multipart/form-data")
       .form-control
         label(for="title") Title
         input(type="text", 
@@ -16,11 +18,14 @@ block content
         value=editing || hasError ? product.title : null,
         class=validationErrors.find(e => e.param === "title") ? "invalid" : "")#title
       .form-control
-        label(for="imageUrl") Image URL
-        input(type="text", 
-        name="imageUrl", 
-        value=editing || hasError ? product.imageUrl : null,
-        class=validationErrors.find(e => e.param === "imageUrl") ? "invalid" : "")#imageUrl
+        label(for="image") Image
+        input(type="file", name="image", id="image")
+      //- .form-control
+      //-   label(for="imageUrl") Image URL
+      //-   input(type="text", 
+      //-   name="imageUrl", 
+      //-   value=editing || hasError ? product.imageUrl : null,
+      //-   class=validationErrors.find(e => e.param === "imageUrl") ? "invalid" : "")#imageUrl
       .form-control
         label(for="price") Price
         input(type="number", 

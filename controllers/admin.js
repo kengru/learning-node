@@ -30,7 +30,8 @@ exports.getAddProduct = (req, res) => {
 };
 
 exports.postAddProduct = (req, res) => {
-  const { title, price, description, imageUrl } = req.body;
+  const { title, price, description } = req.body;
+  const image = req.file;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -42,7 +43,7 @@ exports.postAddProduct = (req, res) => {
       product: {
         title: title,
         price: price,
-        imageUrl: imageUrl,
+        imageUrl: image,
         description: description
       },
       errorMessage: errors.array()[0].msg,
