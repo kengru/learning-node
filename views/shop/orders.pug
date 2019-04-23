@@ -12,6 +12,7 @@ block content
             h1 Order - # #{order._id}
             ul.orders__products
               each item in order.items
-                li.orders__products-item #{item.product.title} (#{item.quantity})
+                if item.product
+                  li.orders__products-item #{item.product.title} (#{item.quantity})
     else
       h1 Nothing here.
