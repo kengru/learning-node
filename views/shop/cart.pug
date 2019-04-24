@@ -17,8 +17,9 @@ block content
               button.btn.danger(type="submit") Delete
       hr
       div.centered
-        form(action="/create-order" method="POST")
-          input(type="hidden", name="_csrf", value=csrfToken)
-          button.btn(type="submit") Order Now!
+        //- form(action="/create-order" method="POST")
+        //-   input(type="hidden", name="_csrf", value=csrfToken)
+        //-   button.btn(type="submit") Order Now!
+        a(href="/checkout", class="btn") Order Now!
     else
       h1 No products in the Cart.
