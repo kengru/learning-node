@@ -18,10 +18,9 @@ block content
               p.product__description #{product.description}
             .card__actions
               a.btn(href="/admin/edit-product/" + product._id + "?edit=true") Edit
-              form(action="/admin/delete-product" method="POST")
-                input(type="hidden", name="productId", value=product._id)
-                input(type="hidden", name="_csrf", value=csrfToken)
-                button.btn(type="submit") Delete
+              input(type="hidden", name="productId", value=product._id)
+              input(type="hidden", name="_csrf", value=csrfToken)
+              button.btn(type="button", onClick="deleteProduct(this)") Delete
       section.pagination
         if currentPage !== 1 && previousPage !== 1
           a(href="?page=1") 1
@@ -34,3 +33,4 @@ block content
           a(href="?page=" + lastPage) #{lastPage}
     else
       h1 No Products
+    script(src="/js/admin.js")

@@ -8,4 +8,13 @@ const deleteFile = filePath => {
   });
 };
 
+const checkFile = filePath => {
+  fs.exists(filePath, err => {
+    if (err) {
+      throw err;
+    }
+  });
+};
+
 exports.deleteFile = deleteFile;
+exports.checkFile = checkFile;
