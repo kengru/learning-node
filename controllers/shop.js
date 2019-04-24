@@ -1,10 +1,13 @@
 const fs = require("fs");
 const path = require("path");
+const stripe = require("stripe")(process.env.STRIPE_API_KEY);
+require("dotenv").config();
 
 const PDFDocument = require("pdfkit");
 
 const Product = require("../models/product");
 const Order = require("../models/order");
+const User = require("../models/user");
 
 const ITEMS_PER_PAGE = 3;
 
@@ -102,8 +105,28 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  req.user
-    .addOrder()
+  let totalPrice = 0;
+  const token = req.body.stripeToken;
+
+  User.findOne({ _id: req.user._id })
+    .populate("cart.items.product")
+    .then(user => {
+      return user.cart.items.forEach(p => {
+        totalPrice += p.product.price * p.quantity;
+      });
+    })
+    .then(result => {
+      return req.user.addOrder();
+    })
+    .then(result => {
+      const charge = stripe.charges.create({
+        amout: totalPrice * 100,
+        currency: "usd",
+        description: "Demo Order",
+        source: token,
+        metadata: { order_id: result._id.toString() }
+      });
+    })
     .then(result => {
       res.redirect("/orders");
     })
@@ -128,7 +151,8 @@ exports.getCheckout = (req, res, next) => {
         pageTitle: "Checkout",
         path: "/checkout",
         products: products,
-        totalSum: total
+        totalSum: total,
+        stripeKey: process.env.STRIPE_API_KEY
       });
     })
     .catch(err => {
