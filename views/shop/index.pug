@@ -14,7 +14,7 @@ block content
             div.card__image
               img(src="/" + product.imageUrl, alt=product.title)
             div.card__content
-              h2.product__price $#{product.price}
+              h2.product__price $ #{product.price}
               p.product__description #{product.description}
             .card__actions
               a.btn(href="/products/" + product._id) Details
@@ -23,5 +23,8 @@ block content
                   input(type="hidden" name="productId" value=product._id)
                   input(type="hidden", name="_csrf", value=csrfToken)
                   button.btn(type="submit") Add to Cart
+      section.pagination
+        a(href="/?page=1") 1
+        a(href="/?page=2") 2
     else
       h1 No Products
